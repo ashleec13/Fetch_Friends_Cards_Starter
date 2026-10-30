@@ -20,9 +20,12 @@ function loadFriends() {
   statusMessage.classList.remove("error");
   statusMessage.textContent = "Loading friends...";
 
+  // Create the XMLHttpRequest object.
   const xhr = new XMLHttpRequest();
+  // Open a GET request for friends.json.
   xhr.open("GET", "friends.json");
 
+  // Handle the response after the request loads.
   xhr.onload = function () {
     if (xhr.status === 200) {
       try {
@@ -36,7 +39,9 @@ function loadFriends() {
     }
   };
 
+  // Handle network errors.
   xhr.onerror = showLoadError;
+  // Send the request.
   xhr.send();
 }
 
