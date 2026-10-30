@@ -22,6 +22,7 @@ async function loadFriends() {
 
   try {
     const response = await fetch("friends.json");
+    // Fetch resolves for HTTP errors like 404, so check response.ok explicitly.
     if (response.ok === false) {
       throw new Error(response.status);
     }
