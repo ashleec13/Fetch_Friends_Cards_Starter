@@ -20,29 +20,23 @@ function loadFriends() {
   statusMessage.classList.remove("error");
   statusMessage.textContent = "Loading friends...";
 
-  // Create the XMLHttpRequest object.
-  const xhr = new XMLHttpRequest();
-  // Open a GET request for friends.json.
-  xhr.open("GET", "friends.json");
-
-  // Handle the response after the request loads.
-  xhr.onload = function () {
-    if (xhr.status === 200) {
-      try {
-        const friends = JSON.parse(xhr.responseText);
-        renderFriends(friends);
-      } catch (error) {
-        showDataError(error);
+  fetch("friends.json")
+    .then(function (response) {
+      if (response.ok === false) {
+        throw new Error(response.status);
       }
-    } else {
-      showLoadError();
-    }
-  };
-
-  // Handle network errors.
-  xhr.onerror = showLoadError;
-  // Send the request.
-  xhr.send();
+      return response.json();
+    })
+    .then(function (friends) {
+      renderFriends(friends);
+    })
+    .catch(function (error) {
+      if (error instanceof SyntaxError) {
+        showDataError(error);
+      } else {
+        showLoadError();
+      }
+    });
 }
 
 // -------------------------------------------------------------
